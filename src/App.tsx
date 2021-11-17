@@ -18,20 +18,19 @@ function App() {
     }))
   }
 
-  const fetchData = async () => {
-    client.get('/api/conversion').then((response) => {
-      setDataPoints(getNormalizedData(response));
-    });
-  }
-
   useEffect(() => {
+    const fetchData = async () => {
+      client.get('/api/conversion').then((response) => {
+        setDataPoints(getNormalizedData(response));
+      });
+    }
+
     fetchData();
   }, []);
 
   return (
     <div className="App">
-      {dataPoints && <ConversionWidget data={dataPoints} />}
-      {!dataPoints && <div>Loading...</div>}
+      {dataPoints.length ? <ConversionWidget data={dataPoints} /> : <div>Loading...</div>}
     </div>
   );
 }
