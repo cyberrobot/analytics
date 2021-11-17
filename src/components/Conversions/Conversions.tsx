@@ -33,6 +33,8 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric, colorConfig
     );
   };
 
+  const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
+
   const tooltipFormatter = ({active, payload, label}: any) => {
     if (active && payload && payload.length) {
       const props = payload[0].payload;
@@ -40,11 +42,9 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric, colorConfig
         <div className="custom-tooltip">
           <h4>{moment(props['date']).format(dateFormat)}</h4>
           <div className="period-type">Current period</div>
-          <div style={{color: colorConfig.currentPeriod}}>{`Visits : ${props.current_period['visits']}`}</div>
-          <div style={{color: colorConfig.currentPeriod}}>{`Transactions : £${props.current_period['transactions']}`}</div>
+          <div style={{color: colorConfig.currentPeriod}}>{`${capitalize(metric)} : ${props.current_period[metric]}`}</div>
           <div className="period-type">Compare period</div>
-          <div style={{color: colorConfig.comparePeriod}}>{`Visits : ${props.compare_period['visits']}`}</div>
-          <div style={{color: colorConfig.comparePeriod}}>{`Transactions : £${props.compare_period['transactions']}`}</div>
+          <div style={{color: colorConfig.comparePeriod}}>{`${capitalize(metric)} : ${props.compare_period[metric]}`}</div>
         </div>
       );
     }
