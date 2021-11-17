@@ -1,24 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import './App.scss';
+import server from './server';
+import { client } from './client';
+import ConversionWidget from './components/Conversions';
+import conversion from './types';
+import moment from 'moment'
 
 function App() {
+  server({});
+
+  const [dataPoints, setDataPoints] = useState([]);
+
+  const getNormalizedData = (data: any) => {
+    return data.map((dataPoint: conversion) => ({
+      ...dataPoint,
+      date: moment(dataPoint.date).format('DD/MM/YYYY')
+    }))
+  }
+
+  const fetchData = async () => {
+    client.get('/api/conversion').then((response) => {
+      setDataPoints(getNormalizedData(response));
+    });
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {dataPoints && <ConversionWidget data={dataPoints} />}
+      {!dataPoints && <div>Loading...</div>}
     </div>
   );
 }
