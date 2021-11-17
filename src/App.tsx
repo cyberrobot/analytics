@@ -9,10 +9,12 @@ import moment from 'moment'
 import DateRangeFilter from './components/DateRangeFilter';
 import MetricSelector from './components/MetricSelector';
 import { Space, Spin } from 'antd';
+import { ConfigContext } from './context';
 
 function App() {
   server({});
 
+  const config = {dateFormat: 'DD/MM/YYYY'};
   const [dataPoints, setDataPoints] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [currentMetric, setCurrentMetric] = useState('visits')
@@ -50,19 +52,21 @@ function App() {
   }
 
   return (
-    <div className="App">
-      {dataPoints.length ? 
-        <div>
+    <ConfigContext.Provider value={config}>
+      <div className="App">
+        {dataPoints.length ? 
           <div>
-            <Space>
-              <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
-              <MetricSelector onChange={onMetricChange} />
-            </Space>
+            <div>
+              <Space>
+                <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
+                <MetricSelector onChange={onMetricChange} />
+              </Space>
+            </div>
+            <ConversionWidget data={filteredData} metric={currentMetric} />
           </div>
-          <ConversionWidget data={filteredData} metric={currentMetric} />
-        </div>
-      : <div className="loader"><Spin tip="Loading..."></Spin></div>}
-    </div>
+        : <div className="loader"><Spin tip="Loading..."></Spin></div>}
+      </div>
+    </ConfigContext.Provider>
   );
 }
 

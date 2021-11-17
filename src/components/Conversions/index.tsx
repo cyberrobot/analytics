@@ -1,6 +1,7 @@
 import moment from "moment";
-import { FC } from "react";
+import { FC, useContext } from "react";
 import { XAxis, YAxis, CartesianGrid, Tooltip, ComposedChart, Bar } from 'recharts';
+import { ConfigContext } from "../../context";
 import { sales } from "../../types";
 
 type ConversionWidgetProps = {
@@ -16,11 +17,13 @@ type TickProps = {
 }
  
 const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric }) => {
+  const { dateFormat } = useContext(ConfigContext);
+  
   const tick = ({ x, y, stroke, payload }: TickProps) => {
     return (
       <g transform={`translate(${x},${y})`}>
         <text className="custom-tick" x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
-          {moment(payload.value).format('DD/MM/YYYY')}
+          {moment(payload.value).format(dateFormat)}
         </text>
       </g>
     );
@@ -31,7 +34,7 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric }) => {
       const props = payload[0].payload;
       return (
         <div className="custom-tooltip">
-          <h4>{moment(props['date']).format('DD/MM/YYYY')}</h4>
+          <h4>{moment(props['date']).format(dateFormat)}</h4>
           <div className="period-type">Current period</div>
           <div style={{color: '#413ea0'}}>{`Visits : ${props.current_period['visits']}`}</div>
           <div style={{color: '#413ea0'}}>{`Transactions : £${props.current_period['transactions']}`}</div>

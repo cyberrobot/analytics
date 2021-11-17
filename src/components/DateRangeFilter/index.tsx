@@ -1,6 +1,7 @@
 import { Button, DatePicker, Space } from 'antd';
 import moment from 'moment';
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
+import { ConfigContext } from '../../context';
 
 const { RangePicker } = DatePicker;
 
@@ -13,6 +14,7 @@ type DateRangeFilterProps = {
 const DateRangeFilter: FC<DateRangeFilterProps> = ({ onChange, minDate, maxDate }) => {
   const [dateStart, setDateStart] = useState(null);
   const [dateEnd, setDateEnd] = useState(null);
+  const { dateFormat } = useContext(ConfigContext);
 
   const setDate = (range: any) => {
     if (range === null) {
@@ -41,7 +43,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({ onChange, minDate, maxDate 
   return (
     <div className="date-range-filter">
       <Space>
-        <RangePicker onChange={(dates: any) => setDate(dates)} disabledDate={setLimits} />
+        <RangePicker format={dateFormat} onChange={(dates: any) => setDate(dates)} disabledDate={setLimits} />
         <Button type="primary" onClick={onApply}>Apply</Button>
       </Space>
     </div>
