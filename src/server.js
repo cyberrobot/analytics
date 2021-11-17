@@ -1,6 +1,7 @@
 import { createServer, Model, Factory } from 'miragejs';
 import moment from 'moment';
 
+// Change this value to set date range limit and the number of data points
 const count = 50;
 const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min) + min);
 const extendSales = () => {

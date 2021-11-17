@@ -72,6 +72,8 @@ function App() {
               <Space direction="vertical">
                 <h2>Select a date range</h2>
                 <div className="light">When a date range is selected, the data points outside the range will be filtered out.</div>
+                <div className="light">Date picker available dates are limited by the data. You can select {dataPoints.length} days in the future.</div>
+                <div className="light">Changing the count value in server.js file will set the number of data points.</div>
                 <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
                 <h2>Toggle metric</h2>
                 <div className="light">Switching between different metric types will change the chart data.</div>
