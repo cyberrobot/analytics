@@ -21,16 +21,22 @@ const extendSales = () => {
     });
   }
 
-  // Set conversion to 3% - 5%.
-  const dataPointsCurrentPeriod = [...currentPeriod].map((day) => ({
-    ...day,
-    transactions: Math.floor(day.visits * (getRandomInt(3, 5) / 100))
-  }));
+  // Set conversion to 3% - 5% and price per item to 100.
+  const dataPointsCurrentPeriod = [...currentPeriod].map((day) => {
+    const unitPrice = getRandomInt(50, 300);
+    return {
+      ...day,
+      transactions: Math.floor(day.visits * (getRandomInt(3, 5) / 100) * unitPrice)
+    };
+  });
 
-  const dataPointsComparePeriod = [...comparePeriod].map((day) => ({
-    ...day,
-    transactions: Math.floor(day.visits * (getRandomInt(3, 5) / 100))
-  }));
+  const dataPointsComparePeriod = [...comparePeriod].map((day) => {
+    const unitPrice = getRandomInt(40, 200);
+    return {
+      ...day,
+      transactions: Math.floor(day.visits * (getRandomInt(3, 5) / 100) * unitPrice)
+    };
+  });
 
   return {
     date(i) {

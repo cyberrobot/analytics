@@ -14,13 +14,6 @@ function App() {
   const [dataPoints, setDataPoints] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  // const getNormalizedData = (data: any) => {
-  //   return data.map((dataPoint: conversion) => ({
-  //     ...dataPoint,
-  //     date: moment(dataPoint.date).format('DD/MM/YYYY')
-  //   }))
-  // }
-
   const filterData = ({dateStart, dateEnd}: any) => {
     if (dateStart === null && dateEnd === null) {
       setFilteredData(dataPoints);

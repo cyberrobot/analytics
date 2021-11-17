@@ -33,10 +33,10 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
           <h4>{moment(props['date']).format('DD/MM/YYYY')}</h4>
           <div className="period-type">Current period</div>
           <div style={{color: '#413ea0'}}>{`Visits : ${props.current_period['visits']}`}</div>
-          <div style={{color: '#413ea0'}}>{`Transactions : ${props.current_period['transactions']}`}</div>
+          <div style={{color: '#413ea0'}}>{`Transactions : £${props.current_period['transactions']}`}</div>
           <div className="period-type">Compare period</div>
           <div style={{color: '#82ca9d'}}>{`Visits : ${props.compare_period['visits']}`}</div>
-          <div style={{color: '#82ca9d'}}>{`Transactions : ${props.compare_period['transactions']}`}</div>
+          <div style={{color: '#82ca9d'}}>{`Transactions : £${props.compare_period['transactions']}`}</div>
         </div>
       );
     }
