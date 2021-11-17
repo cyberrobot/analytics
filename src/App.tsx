@@ -3,11 +3,11 @@ import './App.scss';
 import 'antd/dist/antd.css'
 import server from './server';
 import { client } from './client';
-import ConversionWidget from './components/Conversions';
+import ConversionWidget from './components/Conversions/Conversions';
 import sales from './types';
 import moment from 'moment'
-import DateRangeFilter from './components/DateRangeFilter';
-import MetricSelector from './components/MetricSelector';
+import DateRangeFilter from './components/DateRangeFilter/DateRangeFilter';
+import MetricSelector from './components/MetricSelector/MetricSelector';
 import { Col, Row, Space, Spin } from 'antd';
 import { ConfigContext } from './context';
 import { CompactPicker } from 'react-color';
