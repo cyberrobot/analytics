@@ -8,7 +8,7 @@ import sales from './types';
 import moment from 'moment'
 import DateRangeFilter from './components/DateRangeFilter';
 import MetricSelector from './components/MetricSelector';
-import { Space } from 'antd';
+import { Space, Spin } from 'antd';
 
 function App() {
   server({});
@@ -61,7 +61,7 @@ function App() {
           </div>
           <ConversionWidget data={filteredData} metric={currentMetric} />
         </div>
-      : <div>Loading...</div>}
+      : <div className="loader"><Spin tip="Loading..."></Spin></div>}
     </div>
   );
 }
