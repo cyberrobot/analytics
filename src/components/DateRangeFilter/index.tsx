@@ -5,10 +5,12 @@ import { FC, useState } from 'react';
 const { RangePicker } = DatePicker;
 
 type DateRangeFilterProps = {
-  onChange: ({dateStart, dateEnd}: { dateStart: moment.Moment | null, dateEnd: moment.Moment | null}) => void
+  onChange: ({dateStart, dateEnd}: { dateStart: moment.Moment | null, dateEnd: moment.Moment | null}) => void,
+  minDate: moment.Moment,
+  maxDate: moment.Moment
 }
  
-const DateRangeFilter: FC<DateRangeFilterProps> = ({ onChange }) => {
+const DateRangeFilter: FC<DateRangeFilterProps> = ({ onChange, minDate, maxDate }) => {
   const [dateStart, setDateStart] = useState(null);
   const [dateEnd, setDateEnd] = useState(null);
 
@@ -31,11 +33,15 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({ onChange }) => {
       dateEnd
     });
   }
+
+  const setLimits = (currentDate: moment.Moment) => {
+    return currentDate.isBefore(minDate) || currentDate.isAfter(maxDate);
+  }
   
   return (
     <div className="date-range-filter">
       <Space>
-        <RangePicker onChange={(dates: any) => setDate(dates)} />
+        <RangePicker onChange={(dates: any) => setDate(dates)} disabledDate={setLimits} />
         <Button type="primary" onClick={onApply}>Apply</Button>
       </Space>
     </div>

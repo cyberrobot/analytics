@@ -14,12 +14,12 @@ function App() {
   const [dataPoints, setDataPoints] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
-  const getNormalizedData = (data: any) => {
-    return data.map((dataPoint: conversion) => ({
-      ...dataPoint,
-      date: moment(dataPoint.date).format('DD/MM/YYYY')
-    }))
-  }
+  // const getNormalizedData = (data: any) => {
+  //   return data.map((dataPoint: conversion) => ({
+  //     ...dataPoint,
+  //     date: moment(dataPoint.date).format('DD/MM/YYYY')
+  //   }))
+  // }
 
   const filterData = ({dateStart, dateEnd}: any) => {
     if (dateStart === null && dateEnd === null) {
@@ -28,7 +28,7 @@ function App() {
     }
 
     const result = [...dataPoints].filter((dataPoint: conversion) => {
-      const toMoment = moment(dataPoint.date, 'DD/MM/YYYY').startOf('day');
+      const toMoment = moment(dataPoint.date).startOf('day');
       return toMoment.isSameOrBefore(dateEnd) && toMoment.isSameOrAfter(dateStart);
     });
     setFilteredData(result);
@@ -37,19 +37,23 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       client.get('/api/conversion').then((response) => {
-        setDataPoints(getNormalizedData(response));
-        setFilteredData(getNormalizedData(response));
+        setDataPoints(response);
+        setFilteredData(response);
       });
     }
 
     fetchData();
   }, []);
 
+  const getDate = (dataPoint: conversion) => {
+      return moment(dataPoint.date);
+  }
+
   return (
     <div className="App">
       {dataPoints.length ? 
         <div>
-          <DateRangeFilter onChange={filterData} />
+          <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
           <ConversionWidget data={filteredData} />
         </div>
       : <div>Loading...</div>}

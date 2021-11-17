@@ -1,3 +1,4 @@
+import moment from "moment";
 import { FC } from "react";
 import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { conversion } from "../../types";
@@ -18,7 +19,7 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
     return (
       <g transform={`translate(${x},${y})`}>
         <text className="custom-tick" x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="rotate(-35)">
-          {payload.value}
+          {moment(payload.value).format('DD/MM/YYYY')}
         </text>
       </g>
     );
