@@ -15,7 +15,7 @@ const extendConversion = () => {
   // Set conversion to 3% - 5%.
   const dataPoints = [...visits].map((day) => ({
     ...day,
-    transactions: Math.floor(day.visits * (getRandomInt(0, 5) / 100))
+    transactions: Math.floor(day.visits * (getRandomInt(3, 5) / 100))
   }));
 
   return {

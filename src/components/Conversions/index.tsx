@@ -1,6 +1,6 @@
 import moment from "moment";
 import { FC } from "react";
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ZAxis, ComposedChart, Line, Bar } from 'recharts';
 import { conversion } from "../../types";
 
 type ConversionWidgetProps = {
@@ -25,24 +25,35 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
     );
   };
 
-  const tooltipFormatter = (value: string|number, name: string, props: any) => {
-    if (props.dataKey === 'date') {
-      return [moment(value).format('DD/MM/YYYY'), name];
+  const tooltipFormatter = ({active, payload, label}: any) => {
+    if (active && payload && payload.length) {
+      const props = payload[0].payload;
+      const conversion = (props['transactions'] / props['visits'] * 100).toFixed(2);
+      return (
+        <div className="custom-tooltip">
+          <h4>{moment(props['date']).format('DD/MM/YYYY')}</h4>
+          <div>{`Visits : ${props['visits']}`}</div>
+          <div>{`Transactions : ${props['transactions']}`}</div>
+          <div>{`Conversion : ${conversion}%`}</div>
+        </div>
+      );
     }
-
-    return [value, name];
+  
+    return null;
   }
 
   return (
-    <ScatterChart 
+    <ComposedChart 
+      data={data} 
       width={1000} 
       height={450}>
-      <CartesianGrid strokeDasharray="3 3" />
-      <XAxis dataKey="date" name="Date" tick={tick} height={75} interval={2} />
-      <YAxis type="number" dataKey="transactions" name="Transactions" />
-      <Tooltip cursor={{ strokeDasharray: '3 3' }} formatter={tooltipFormatter} />
-      <Scatter name="Conversion" data={data} fill="#8884d8" />
-    </ScatterChart>
+      <CartesianGrid stroke="#f5f5f5" />
+      <XAxis dataKey="date" name="date" tick={tick} height={75} interval={2} />
+      <YAxis />
+      <Tooltip cursor={{ strokeDasharray: '3 3' }} content={tooltipFormatter} />
+      <Bar dataKey="visits" barSize={20} fill="#413ea0" />
+      <Line type="monotone" dataKey="transactions" stroke="#ff7300" />
+    </ComposedChart>
   );
 }
  
