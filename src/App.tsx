@@ -68,11 +68,21 @@ function App() {
       <div className="App">
         {dataPoints.length ? 
           <div>
-            <Space>
-              <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
-              <MetricSelector onChange={onMetricChange} />
-            </Space>
+            <div className="info-message">
+              <Space direction="vertical">
+                <h2>Select a date range</h2>
+                <div className="light">When a date range is selected, the data points outside the range will be filtered out.</div>
+                <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
+                <h2>Toggle metric</h2>
+                <div className="light">Switching between different metric types will change the chart data.</div>
+                <MetricSelector onChange={onMetricChange} />
+              </Space>
+            </div>
             <ConversionWidget colorConfig={colorConfig} data={filteredData} metric={currentMetric} />
+            <div className="info-message">
+              <h2>Select a chart bar colour</h2>
+              <div className="light">When a color selected it'll change colour of the for the corresponding chart bar</div>
+            </div>
             <Row className="color-picker-container" gutter={16}>
               <Col>
                 <h3>Current period</h3>

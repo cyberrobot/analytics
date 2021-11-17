@@ -41,7 +41,7 @@ const DateRangeFilter: FC<DateRangeFilterProps> = ({ onChange, minDate, maxDate 
   }
   
   return (
-    <div className="date-range-filter">
+    <div>
       <Space>
         <RangePicker format={dateFormat} onChange={(dates: any) => setDate(dates)} disabledDate={setLimits} />
         <Button type="primary" onClick={onApply}>Apply</Button>
