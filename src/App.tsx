@@ -4,7 +4,7 @@ import 'antd/dist/antd.css'
 import server from './server';
 import { client } from './client';
 import ConversionWidget from './components/Conversions';
-import conversion from './types';
+import sales from './types';
 import moment from 'moment'
 import DateRangeFilter from './components/DateRangeFilter';
 
@@ -27,7 +27,7 @@ function App() {
       return;
     }
 
-    const result = [...dataPoints].filter((dataPoint: conversion) => {
+    const result = [...dataPoints].filter((dataPoint: sales) => {
       const toMoment = moment(dataPoint.date).startOf('day');
       return toMoment.isSameOrBefore(dateEnd) && toMoment.isSameOrAfter(dateStart);
     });
@@ -36,7 +36,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      client.get('/api/conversion').then((response) => {
+      client.get('/api/sales').then((response: any) => {
         setDataPoints(response);
         setFilteredData(response);
       });
@@ -45,7 +45,7 @@ function App() {
     fetchData();
   }, []);
 
-  const getDate = (dataPoint: conversion) => {
+  const getDate = (dataPoint: sales) => {
       return moment(dataPoint.date);
   }
 

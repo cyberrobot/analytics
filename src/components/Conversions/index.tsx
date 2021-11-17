@@ -1,10 +1,10 @@
 import moment from "moment";
 import { FC } from "react";
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ZAxis, ComposedChart, Line, Bar } from 'recharts';
-import { conversion } from "../../types";
+import { XAxis, YAxis, CartesianGrid, Tooltip, ComposedChart, Line, Bar, Legend } from 'recharts';
+import { sales } from "../../types";
 
 type ConversionWidgetProps = {
-  data: conversion[]
+  data: sales[]
 }
 
 type TickProps = {
@@ -28,13 +28,15 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
   const tooltipFormatter = ({active, payload, label}: any) => {
     if (active && payload && payload.length) {
       const props = payload[0].payload;
-      const conversion = (props['transactions'] / props['visits'] * 100).toFixed(2);
       return (
         <div className="custom-tooltip">
           <h4>{moment(props['date']).format('DD/MM/YYYY')}</h4>
-          <div>{`Visits : ${props['visits']}`}</div>
-          <div>{`Transactions : ${props['transactions']}`}</div>
-          <div>{`Conversion : ${conversion}%`}</div>
+          <div className="period-type">Current period</div>
+          <div style={{color: '#413ea0'}}>{`Visits : ${props.current_period['visits']}`}</div>
+          <div style={{color: '#413ea0'}}>{`Transactions : ${props.current_period['transactions']}`}</div>
+          <div className="period-type">Compare period</div>
+          <div style={{color: '#82ca9d'}}>{`Visits : ${props.compare_period['visits']}`}</div>
+          <div style={{color: '#82ca9d'}}>{`Transactions : ${props.compare_period['transactions']}`}</div>
         </div>
       );
     }
@@ -51,8 +53,8 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
       <XAxis dataKey="date" name="date" tick={tick} height={75} interval={2} />
       <YAxis />
       <Tooltip cursor={{ strokeDasharray: '3 3' }} content={tooltipFormatter} />
-      <Bar dataKey="visits" barSize={20} fill="#413ea0" />
-      <Line type="monotone" dataKey="transactions" stroke="#ff7300" />
+      <Bar dataKey={(data) => data.current_period.visits} barSize={20} fill="#413ea0" />
+      <Bar dataKey={(data) => data.compare_period.visits} barSize={20} fill="#82ca9d" />
     </ComposedChart>
   );
 }

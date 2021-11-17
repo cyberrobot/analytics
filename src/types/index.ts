@@ -1,7 +1,9 @@
-export type conversion = {
+export type sales = {
   date: string,
-  visits: number,
-  transactions: number
+  currentPeriod: {
+    visits: number,
+    transactions: number
+  }
 }
 
-export default conversion;
+export default sales;
