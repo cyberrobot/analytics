@@ -1,6 +1,6 @@
 import moment from "moment";
 import { FC } from "react";
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 import { conversion } from "../../types";
 
 type ConversionWidgetProps = {
@@ -25,6 +25,14 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
     );
   };
 
+  const tooltipFormatter = (value: string|number, name: string, props: any) => {
+    if (props.dataKey === 'date') {
+      return [moment(value).format('DD/MM/YYYY'), name];
+    }
+
+    return [value, name];
+  }
+
   return (
     <ScatterChart 
       width={1000} 
@@ -32,7 +40,7 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="date" name="Date" tick={tick} height={75} interval={2} />
       <YAxis type="number" dataKey="transactions" name="Transactions" />
-      <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+      <Tooltip cursor={{ strokeDasharray: '3 3' }} formatter={tooltipFormatter} />
       <Scatter name="Conversion" data={data} fill="#8884d8" />
     </ScatterChart>
   );
