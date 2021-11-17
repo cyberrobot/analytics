@@ -7,12 +7,15 @@ import ConversionWidget from './components/Conversions';
 import sales from './types';
 import moment from 'moment'
 import DateRangeFilter from './components/DateRangeFilter';
+import MetricSelector from './components/MetricSelector';
+import { Space } from 'antd';
 
 function App() {
   server({});
 
   const [dataPoints, setDataPoints] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [currentMetric, setCurrentMetric] = useState('visits')
 
   const filterData = ({dateStart, dateEnd}: any) => {
     if (dateStart === null && dateEnd === null) {
@@ -42,12 +45,21 @@ function App() {
       return moment(dataPoint.date);
   }
 
+  const onMetricChange = (metric: string) => {
+    setCurrentMetric(metric);
+  }
+
   return (
     <div className="App">
       {dataPoints.length ? 
         <div>
-          <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
-          <ConversionWidget data={filteredData} />
+          <div>
+            <Space>
+              <DateRangeFilter onChange={filterData} minDate={getDate(dataPoints[0])} maxDate={getDate(dataPoints[dataPoints.length - 1])} />
+              <MetricSelector onChange={onMetricChange} />
+            </Space>
+          </div>
+          <ConversionWidget data={filteredData} metric={currentMetric} />
         </div>
       : <div>Loading...</div>}
     </div>

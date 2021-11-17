@@ -1,10 +1,11 @@
 import moment from "moment";
 import { FC } from "react";
-import { XAxis, YAxis, CartesianGrid, Tooltip, ComposedChart, Line, Bar, Legend } from 'recharts';
+import { XAxis, YAxis, CartesianGrid, Tooltip, ComposedChart, Bar } from 'recharts';
 import { sales } from "../../types";
 
 type ConversionWidgetProps = {
-  data: sales[]
+  data: sales[],
+  metric: string
 }
 
 type TickProps = {
@@ -14,7 +15,7 @@ type TickProps = {
   payload: any
 }
  
-const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
+const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric }) => {
   const tick = ({ x, y, stroke, payload }: TickProps) => {
     return (
       <g transform={`translate(${x},${y})`}>
@@ -53,8 +54,8 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
       <XAxis dataKey="date" name="date" tick={tick} height={75} interval={2} />
       <YAxis />
       <Tooltip cursor={{ strokeDasharray: '3 3' }} content={tooltipFormatter} />
-      <Bar dataKey={(data) => data.current_period.visits} barSize={20} fill="#413ea0" />
-      <Bar dataKey={(data) => data.compare_period.visits} barSize={20} fill="#82ca9d" />
+      <Bar dataKey={(data) => data.current_period[metric]} barSize={20} fill="#413ea0" />
+      <Bar dataKey={(data) => data.compare_period[metric]} barSize={20} fill="#82ca9d" />
     </ComposedChart>
   );
 }
