@@ -6,7 +6,11 @@ import { sales } from "../../types";
 
 type ConversionWidgetProps = {
   data: sales[],
-  metric: string
+  metric: string,
+  colorConfig: {
+    currentPeriod: string,
+    comparePeriod: string
+  }
 }
 
 type TickProps = {
@@ -16,7 +20,7 @@ type TickProps = {
   payload: any
 }
  
-const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric }) => {
+const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric, colorConfig }) => {
   const { dateFormat } = useContext(ConfigContext);
   
   const tick = ({ x, y, stroke, payload }: TickProps) => {
@@ -36,11 +40,11 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric }) => {
         <div className="custom-tooltip">
           <h4>{moment(props['date']).format(dateFormat)}</h4>
           <div className="period-type">Current period</div>
-          <div style={{color: '#413ea0'}}>{`Visits : ${props.current_period['visits']}`}</div>
-          <div style={{color: '#413ea0'}}>{`Transactions : £${props.current_period['transactions']}`}</div>
+          <div style={{color: colorConfig.currentPeriod}}>{`Visits : ${props.current_period['visits']}`}</div>
+          <div style={{color: colorConfig.currentPeriod}}>{`Transactions : £${props.current_period['transactions']}`}</div>
           <div className="period-type">Compare period</div>
-          <div style={{color: '#82ca9d'}}>{`Visits : ${props.compare_period['visits']}`}</div>
-          <div style={{color: '#82ca9d'}}>{`Transactions : £${props.compare_period['transactions']}`}</div>
+          <div style={{color: colorConfig.comparePeriod}}>{`Visits : ${props.compare_period['visits']}`}</div>
+          <div style={{color: colorConfig.comparePeriod}}>{`Transactions : £${props.compare_period['transactions']}`}</div>
         </div>
       );
     }
@@ -57,8 +61,8 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric }) => {
       <XAxis dataKey="date" name="date" tick={tick} height={75} interval={2} />
       <YAxis />
       <Tooltip cursor={{ strokeDasharray: '3 3' }} content={tooltipFormatter} />
-      <Bar dataKey={(data) => data.current_period[metric]} barSize={20} fill="#413ea0" />
-      <Bar dataKey={(data) => data.compare_period[metric]} barSize={20} fill="#82ca9d" />
+      <Bar dataKey={(data) => data.current_period[metric]} barSize={20} fill={colorConfig.currentPeriod} />
+      <Bar dataKey={(data) => data.compare_period[metric]} barSize={20} fill={colorConfig.comparePeriod} />
     </ComposedChart>
   );
 }
