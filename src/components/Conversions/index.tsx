@@ -27,8 +27,7 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data }) => {
   return (
     <ScatterChart 
       width={1000} 
-      height={450}
-      margin={{ top: 20, right: 20, bottom: 10, left: 10 }}>
+      height={450}>
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis dataKey="date" name="Date" tick={tick} height={75} interval={2} />
       <YAxis type="number" dataKey="transactions" name="Transactions" />
