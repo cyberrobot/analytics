@@ -5,14 +5,22 @@ import { FC, useState } from 'react';
 const { RangePicker } = DatePicker;
 
 type DateRangeFilterProps = {
-  onChange: ({dateStart, dateEnd}: { dateStart: moment.Moment | undefined, dateEnd: moment.Moment | undefined}) => void
+  onChange: ({dateStart, dateEnd}: { dateStart: moment.Moment | null, dateEnd: moment.Moment | null}) => void
 }
  
 const DateRangeFilter: FC<DateRangeFilterProps> = ({ onChange }) => {
-  const [dateStart, setDateStart] = useState();
-  const [dateEnd, setDateEnd] = useState();
+  const [dateStart, setDateStart] = useState(null);
+  const [dateEnd, setDateEnd] = useState(null);
 
   const setDate = (range: any) => {
+    if (range === null) {
+      onChange({
+        dateStart: null,
+        dateEnd: null
+      });
+      return;
+    }
+
     setDateStart(range[0].startOf('day'));
     setDateEnd(range[1].endOf('day'));
   }

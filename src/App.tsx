@@ -12,6 +12,7 @@ function App() {
   server({});
 
   const [dataPoints, setDataPoints] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
 
   const getNormalizedData = (data: any) => {
     return data.map((dataPoint: conversion) => ({
@@ -21,17 +22,23 @@ function App() {
   }
 
   const filterData = ({dateStart, dateEnd}: any) => {
-    const result = dataPoints.filter((dataPoint: conversion) => {
+    if (dateStart === null && dateEnd === null) {
+      setFilteredData(dataPoints);
+      return;
+    }
+
+    const result = [...dataPoints].filter((dataPoint: conversion) => {
       const toMoment = moment(dataPoint.date, 'DD/MM/YYYY').startOf('day');
       return toMoment.isSameOrBefore(dateEnd) && toMoment.isSameOrAfter(dateStart);
     });
-    setDataPoints(result);
+    setFilteredData(result);
   }
 
   useEffect(() => {
     const fetchData = async () => {
       client.get('/api/conversion').then((response) => {
         setDataPoints(getNormalizedData(response));
+        setFilteredData(getNormalizedData(response));
       });
     }
 
@@ -43,7 +50,7 @@ function App() {
       {dataPoints.length ? 
         <div>
           <DateRangeFilter onChange={filterData} />
-          <ConversionWidget data={dataPoints} />
+          <ConversionWidget data={filteredData} />
         </div>
       : <div>Loading...</div>}
     </div>
