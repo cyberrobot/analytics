@@ -8,8 +8,7 @@ type ConversionWidgetProps = {
   data: sales[],
   metric: string,
   colorConfig: {
-    currentPeriod: string,
-    comparePeriod: string
+    currentPeriod: string
   }
 }
 
@@ -35,16 +34,20 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric, colorConfig
 
   const capitalize = (string: string) => string.charAt(0).toUpperCase() + string.slice(1);
 
+  const isRevenueMetric = metric === 'revenue';
+
   const tooltipFormatter = ({active, payload, label}: any) => {
     if (active && payload && payload.length) {
       const props = payload[0].payload;
       return (
         <div className="custom-tooltip">
-          <h4>{moment(props['date']).format(dateFormat)}</h4>
-          <div className="period-type">Current period</div>
-          <div style={{color: colorConfig.currentPeriod}}>{`${capitalize(metric)} : ${props.current_period[metric]}`}</div>
-          <div className="period-type">Compare period</div>
-          <div style={{color: colorConfig.comparePeriod}}>{`${capitalize(metric)} : ${props.compare_period[metric]}`}</div>
+          <h4>Apple Store Birmingham</h4>
+          <dl>
+            <dt className="period-type">{capitalize(metric)}:</dt>
+            <dd>{isRevenueMetric ? `£${props.current_period[metric].toFixed(2)}` : props.current_period[metric]}</dd>
+            <dt className="period-type">Date:</dt>
+            <dd>{moment(props['date']).format(dateFormat)}</dd>
+          </dl>
         </div>
       );
     }
@@ -62,7 +65,6 @@ const ConversionWidget: FC<ConversionWidgetProps> = ({ data, metric, colorConfig
       <YAxis />
       <Tooltip cursor={{ strokeDasharray: '3 3' }} content={tooltipFormatter} />
       <Bar dataKey={(data) => data.current_period[metric]} barSize={20} fill={colorConfig.currentPeriod} />
-      <Bar dataKey={(data) => data.compare_period[metric]} barSize={20} fill={colorConfig.comparePeriod} />
     </ComposedChart>
   );
 }

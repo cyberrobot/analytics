@@ -16,7 +16,7 @@ const MetricSelector: FC<MetricSelectorProps> = ({ onChange }) => {
   return (
     <Radio.Group onChange={(e) => onMetricChange(e.target.value)} value={selectedMetric}>
       <Radio value={'visits'}>Visits</Radio>
-      <Radio value={'transactions'}>Transactions</Radio>
+      <Radio value={'revenue'}>Revenue</Radio>
     </Radio.Group>
     
   );

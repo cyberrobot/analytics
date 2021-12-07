@@ -82,17 +82,12 @@ function App() {
             </div>
             <ConversionWidget colorConfig={colorConfig} data={filteredData} metric={currentMetric} />
             <div className="info-message">
-              <h2>Select a chart bar colour</h2>
-              <div className="light">When a color selected it'll change colour of the for the corresponding chart bar</div>
+              <h2>Select bar chart colour</h2>
+              <div className="light">Selecting a swatch changes the colour of the bar chart.</div>
             </div>
             <Row className="color-picker-container" gutter={16}>
               <Col>
-                <h3>Current period</h3>
                 <CompactPicker onChange={(color) => onColorChange({ color: color.hex, type: 'currentPeriod'})} />
-              </Col>
-              <Col>
-                <h3>Compare period</h3>
-                <CompactPicker onChange={(color) => onColorChange({ color: color.hex, type: 'comparePeriod'})} />
               </Col>
             </Row>
           </div>
